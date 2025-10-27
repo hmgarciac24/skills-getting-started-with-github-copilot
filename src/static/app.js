@@ -56,6 +56,43 @@ document.addEventListener("DOMContentLoaded", () => {
             text.textContent = p;
             li.appendChild(avatar);
             li.appendChild(text);
+
+            // delete button to unregister participant
+            const del = document.createElement("button");
+            del.className = "delete-participant";
+            del.title = "Unregister participant";
+            del.setAttribute("aria-label", `Unregister ${p}`);
+            del.textContent = "✖";
+            // store email and activity on button dataset
+            del.dataset.email = p;
+            del.dataset.activity = name;
+            del.addEventListener("click", async (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // confirm quick action (optional)
+              const ok = confirm(`Remove ${p} from ${name}?`);
+              if (!ok) return;
+              try {
+                const res = await fetch(
+                  `/activities/${encodeURIComponent(name)}/participants?email=${encodeURIComponent(p)}`,
+                  { method: "DELETE" }
+                );
+                const result = await res.json();
+                if (res.ok) {
+                  // remove the list item
+                  li.remove();
+                  // refresh availability and lists
+                  fetchActivities();
+                } else {
+                  alert(result.detail || result.message || "Failed to unregister participant");
+                }
+              } catch (err) {
+                console.error("Error unregistering participant:", err);
+                alert("Failed to unregister participant. See console for details.");
+              }
+            });
+
+            li.appendChild(del);
             ul.appendChild(li);
           });
           participantsDiv.appendChild(ul);

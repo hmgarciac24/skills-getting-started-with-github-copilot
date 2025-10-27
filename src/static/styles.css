@@ -92,8 +92,8 @@ section h3 {
 }
 
 .participants ul {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none; /* hide bullet points */
+  padding-left: 0;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -107,6 +107,36 @@ section h3 {
   gap: 10px;
   font-size: 14px;
   color: #333;
+}
+
+/* place delete icon to the far right */
+.participant-item {
+  justify-content: space-between;
+}
+
+.participant-item > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-participant {
+  background: transparent;
+  border: none;
+  color: #c62828;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.delete-participant:hover {
+  background-color: rgba(198, 40, 40, 0.08);
+}
+
+.delete-participant:focus {
+  outline: 2px solid rgba(26, 35, 126, 0.15);
 }
 
 .avatar {
